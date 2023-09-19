@@ -21,7 +21,7 @@ class Pizza(models.Model) :
     prix = models.DecimalField(max_digits=4, decimal_places=2, verbose_name="le prix")
 
     def __str__(self) -> str:
-        return 'pizza' + self.nomPizza + '(prix : ' +str(self.prix) + ' €)'
+        return 'pizza ' + self.nomPizza + ' (prix : ' +str(self.prix) + ' €)'
     
 
 class Composition(models.Model) : 
