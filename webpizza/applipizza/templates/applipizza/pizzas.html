@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title> les pizzas </title>
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <div><a href="/pizzas"> les pizzas </a></div>
+                <div><a href="/ingredients"> les ingredients </a></div>
+            </nav>
+        </header>
+
+        <main>
+            <h2> voici nos {{pizzas|length}} pizzas </h2>
+            <ul>
+                {% for piz in pizzas %}
+                <li> {{piz}} </li>
+                {% endfor %}
+            </ul>
+        </main>
+
+        <footer>
+            © Appli Pizza 2023
+        </footer>
+    </body>
+</html>
