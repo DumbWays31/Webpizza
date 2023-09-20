@@ -3,21 +3,21 @@
 }
 
 
-footer{
+/* footer{
     position: absolute;
     left: 0;
     bottom: 0;
     height: 200px;
     width: 100%;
     color:#FFFFFF; 
-    /* background: #06303A; */
+    background: #06303A;
     background-size: cover 100%;
     background-repeat: no-repeat;
     font-size:1.5em;
     text-align: center;
     line-height:100px;
-}
-
+} */
+/* 
 footer .elena {
     height: 100%;
     position: relative;
@@ -36,4 +36,4 @@ footer .elena p {
     transform: translateX(-50%) translateY(-50%);
     font-family: "Comic Sans MS";
     color: #FC00EC;
-    text-shadow: 5px 5px #FFFFFF;}
+    text-shadow: 5px 5px #FFFFFF;} */
