@@ -8,7 +8,7 @@
     <h2> voici nos {{pizzas|length}} pizzas </h2>
     <ul>
         {% for piz in pizzas %}
-        <li> {{piz}} </li>
+        <li> {{piz}} | <a href="/pizzas/{{piz.idPizza}}/">détails</a> </li>
         {% endfor %}
     </ul>
     {% endblock %}

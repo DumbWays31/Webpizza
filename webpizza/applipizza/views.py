@@ -4,6 +4,8 @@ from django.shortcuts import render
 from applipizza.models import Pizza
 from applipizza.models import Ingredient
 
+from applipizza.models import Composition
+
 
 # Create your views here.
 def pizzas(request) :
@@ -32,14 +34,42 @@ def ingredients(request) :
     )
 
 
-def pizza(request,pizza_id) :
+# def pizza(request,pizza_id) :
 
-    #récup de la pizza dont l'identifiant a été passé en paramètre (c'est l'int pizza_id) 
-    laPizza = Pizza.objects.get(idPizza = pizza_id)
-    
-    #on retourne l'emplacement du template et la pizza récupérée de la BD
+#     #récup de la pizza dont l'identifiant a été passé en paramètre (c'est l'int pizza_id) 
+#     laPizza = Pizza.objects.get(idPizza = pizza_id)
+
+#     #on retourne l'emplacement du template et la pizza récupérée de la BD
+#     return render(
+#         request,
+#         'applipizza/pizza.html',
+#         {"pizza" : laPizza}
+#     )
+
+
+
+
+def pizza(request, pizza_id):
+    # Récupération de la pizza dont l'identifiant a été passé en paramètre (pizza_id)
+    laPizza = Pizza.objects.get(idPizza=pizza_id)
+
+    # Récupération des ingrédients entrant dans la composition de la pizza
+    composition = Composition.objects.filter(pizza=pizza_id)
+
+    # Création d'une liste des ingrédients avec leurs quantités
+    ingredients_list = []
+    for compo in composition:
+        ingredient_info = {
+            'idComposition': compo.id,
+            'nom': compo.ingredient.nomIngredient,
+            'quantite': compo.quantite
+        }
+        ingredients_list.append(ingredient_info)
+
+    # On retourne l'emplacement du template, la pizza récupérée de la BD,
+    # et la liste des ingrédients calculée ci-dessus
     return render(
         request,
         'applipizza/pizza.html',
-        {"pizza" : laPizza}
+        {"pizza": laPizza, "ingredients_list": ingredients_list}
     )
