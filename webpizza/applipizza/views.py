@@ -36,7 +36,7 @@ def pizza(request,pizza_id) :
 
     #récup de la pizza dont l'identifiant a été passé en paramètre (c'est l'int pizza_id) 
     laPizza = Pizza.objects.get(idPizza = pizza_id)
-
+    
     #on retourne l'emplacement du template et la pizza récupérée de la BD
     return render(
         request,
