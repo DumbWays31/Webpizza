@@ -12,4 +12,5 @@ class IngredientForm(ModelForm) :
 class PizzaForm(ModelForm) :
     class Meta : 
         model = Pizza
-        fields = ['nomPizza']
+        fields = ['nomPizza', 'prix']
+

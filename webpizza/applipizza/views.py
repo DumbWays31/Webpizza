@@ -58,13 +58,14 @@ def pizza(request, pizza_id):
     )
 
 
+
+#CREER INGREDIENT
 def formulaireCreationIngredient(request) :
     #on retourn l'emplacement du template
     return render(
         request,
         'applipizza/formulaireCreationIngredient.html',
     )
-
 
 def creerIngredient(request) :
     
@@ -94,8 +95,8 @@ def creerIngredient(request) :
         )
 
 
+#CREER PIZZA
 def formulaireCreationPizza(request) :
-    #on retourn l'emplacement du template
     return render(
         request,
         'applipizza/formulaireCreationPizza.html',
@@ -107,10 +108,15 @@ def creerPizza(request) :
 
     if form.is_valid() :
         nomPiz = form.cleaned_data['nomPizza']
+        prixPiz = form.cleaned_data['prixPizza']
+
         piz = Pizza()
+
         piz.nomPizza = nomPiz
+        piz.prixPizza = prixPiz
+
         piz.save()
-        
+
         return render(
             request,
             'applipizza/traitementFormulaireCreationPizza.html',
