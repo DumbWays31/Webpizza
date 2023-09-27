@@ -1,0 +1,17 @@
+{% extends 'applipizza/base.html' %}
+
+{% block title %}
+création d'une pizza
+{% endblock %}
+
+{% block main %}
+<h2> création d'une pizza </h2>
+<form action="/pizzas/create/" method="post">
+    {% csrf_token %} 
+    <div class="mb-3">
+        <label for="id_nomPizza" class="form-label">Le nom de cette pizza</label>
+        <input type="text" name="nomIngredient" class="form-control" maxlength="50" required id="id_nomPizza">
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+{% endblock %}

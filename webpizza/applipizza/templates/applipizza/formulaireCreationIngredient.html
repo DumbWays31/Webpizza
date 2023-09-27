@@ -6,7 +6,7 @@ création d'un ingrédient
 
 {% block main %}
 <h2> création d'un ingrédient </h2>
-<form action="#" method="post">
+<form action="/ingredients/create/" method="post">
     {% csrf_token %} 
     <div class="mb-3">
         <label for="id_nomIngredient" class="form-label">Le nom de cet ingredient</label>
@@ -14,12 +14,4 @@ création d'un ingrédient
     </div>
     <button type="submit" class="btn btn-primary">Envoyer</button>
 </form>
-
-
-
-<ul>
-    {% for piz in pizzas %}
-    <li> {{piz}} | <a href="/pizzas/{{piz.idPizza}}/">détails</a> </li>
-    {% endfor %}
-</ul>
 {% endblock %}
