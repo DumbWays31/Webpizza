@@ -34,21 +34,6 @@ def ingredients(request) :
     )
 
 
-# def pizza(request,pizza_id) :
-
-#     #récup de la pizza dont l'identifiant a été passé en paramètre (c'est l'int pizza_id) 
-#     laPizza = Pizza.objects.get(idPizza = pizza_id)
-
-#     #on retourne l'emplacement du template et la pizza récupérée de la BD
-#     return render(
-#         request,
-#         'applipizza/pizza.html',
-#         {"pizza" : laPizza}
-#     )
-
-
-
-
 def pizza(request, pizza_id):
     # Récupération de la pizza dont l'identifiant a été passé en paramètre (pizza_id)
     laPizza = Pizza.objects.get(idPizza=pizza_id)
@@ -72,4 +57,12 @@ def pizza(request, pizza_id):
         request,
         'applipizza/pizza.html',
         {"pizza": laPizza, "ingredients_list": ingredients_list}
+    )
+
+
+def formulaireCreationIngredient(request) :
+    #on retourn l'emplacement du template
+    return render(
+        request,
+        'applipizza/formulaireCreationIngredient.html',
     )
