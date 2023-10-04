@@ -4,8 +4,6 @@ from django.shortcuts import render
 from applipizza.models import Pizza, Ingredient, Composition
 from applipizza.forms import IngredientForm, PizzaForm
 
-from django.http import HttpResponse
-
 
 
 # Create your views here.
@@ -35,6 +33,8 @@ def ingredients(request) :
     )
 
 
+from .models import Ingredient  # Assurez-vous d'importer le modèle Ingredient si ce n'est pas déjà fait
+
 def pizza(request, pizza_id):
     # Récupération de la pizza dont l'identifiant a été passé en paramètre (pizza_id)
     laPizza = Pizza.objects.get(idPizza=pizza_id)
@@ -52,13 +52,17 @@ def pizza(request, pizza_id):
         }
         ingredients_list.append(ingredient_info)
 
+    # Récupération de tous les ingrédients pour construire le select de formulaire
+    all_ingredients = Ingredient.objects.all()
+
     # On retourne l'emplacement du template, la pizza récupérée de la BD,
-    # et la liste des ingrédients calculée ci-dessus
+    # la liste des ingrédients calculée ci-dessus et la liste de tous les ingrédients
     return render(
         request,
         'applipizza/pizza.html',
-        {"pizza": laPizza, "ingredients_list": ingredients_list}
+        {"pizza": laPizza, "ingredients_list": ingredients_list, "all_ingredients": all_ingredients}
     )
+
 
 
 
@@ -111,12 +115,12 @@ def creerPizza(request) :
 
     if form.is_valid() :
         nomPiz = form.cleaned_data['nomPizza']
-        prixPiz = form.cleaned_data['prixPizza']
+        prixPiz = form.cleaned_data['prix']
 
         piz = Pizza()
 
         piz.nomPizza = nomPiz
-        piz.prixPizza = prixPiz
+        piz.prix = prixPiz
 
         piz.save()
 
