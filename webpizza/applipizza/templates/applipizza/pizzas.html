@@ -1,14 +1,18 @@
-    {% extends 'applipizza/base.html' %}
+{% extends 'applipizza/base.html' %}
 
-    {% block title %}
-    les pizzas
-    {% endblock %}
+{% block title %}
+les pizzas
+{% endblock %}
 
-    {% block main %}
-    <h2> voici nos {{pizzas|length}} pizzas </h2>
-    <ul>
-        {% for piz in pizzas %}
-        <li> {{piz}} | <a href="/pizzas/{{piz.idPizza}}/">détails</a> </li>
-        {% endfor %}
-    </ul>
-    {% endblock %}
+{% block main %}
+<h2> voici nos {{pizzas|length}} pizzas </h2>
+<ul>
+    {% for piz in pizzas %}
+    <li> {{piz}} | 
+        <a href="/pizzas/{{piz.idPizza}}/">détails</a> |
+        <a href="/pizzas/{{piz.idPizza}}/update">modifier</a> |
+        <a href="/pizzas/{{piz.idPizza}}/delete">supprimer</a> 
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

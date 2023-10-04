@@ -1,0 +1,21 @@
+{% extends 'applipizza/base.html' %}
+
+{% block title %}
+modification d'une pizza
+{% endblock %}
+
+{% block main %}
+<h2>Modification d'une pizza</h2>
+<form action="/pizzas/{{pizza.idPizza}}/updated/" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_nomPizza" class="form-label">Le nom de cette pizza </label>
+        <input type="text" name="nomPizza" class="form-control" maxlength="50" required id="id_nomPizza" value="{{pizza.nomPizza}}">
+    </div>
+    <div class="mb-3">
+        <label for="id_prix" class="form-label">le prix de cette pizza </label>
+        <input type="number" name="prix" value="0" min="0" step="0.01" class="form-control" required id="id_prix" value="{{pizza.prix}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+{% endblock %}

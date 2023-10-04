@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 
 #import des modèles
 from applipizza.models import Pizza, Ingredient, Composition
-from applipizza.forms import IngredientForm, PizzaForm
+from applipizza.forms import IngredientForm, PizzaForm, CompositionForm
 
 
 
@@ -131,7 +132,7 @@ def creerPizza(request) :
 
 def ajouterIngredientDansPizza(request, pizza_id) :
     #recupération du formulaire posté
-    formulaire = Composition(request.POST)
+    formulaire = CompositionForm(request.POST)
 
     if formulaire.is_valid():
         #recuperation des données postées
@@ -154,28 +155,130 @@ def ajouterIngredientDansPizza(request, pizza_id) :
         #sauvegarde dans la base de la composition
         compo.save()
 
-    #récupération de tous les ing pour construire le futur select
-    lesIngredients = Ingredient.objects.all()
+    # #récupération de tous les ing pour construire le futur select
+    # lesIngredients = Ingredient.objects.all()
 
-    #actualisation des ing entrant dans la composition de la pizza
-    compoPizza = Composition.objects.filter(pizza = pizza_id)
+    # #actualisation des ing entrant dans la composition de la pizza
+    # compoPizza = Composition.objects.filter(pizza = pizza_id)
 
-    #on crée une liste dont chaque item contiendra l'identifiant de la compo (idComposition),
-    #le nom de l'ingrédient et la quantité de l'ing dans cette compo
-    listeIngredients = []
-    for ligneCompo in compoPizza :
-        #on récupère l'ingrédient pour utiliser son nomIngredient
-        ingredient = Ingredient.objects.get(idIngredient = ligneCompo.ingredient.idIngredient)
-        listeIngredients.append(
-            {"idComposition" : ligneCompo.idComposition,
-             "nom" : ingredient.nomIngredient,
-             "qte" : ligneCompo.quantite}
-        )
-    #on retourne l'emplacement du template, la pizza récupérée et la liste des ing calculée
+    # #on crée une liste dont chaque item contiendra l'identifiant de la compo (idComposition),
+    # #le nom de l'ingrédient et la quantité de l'ing dans cette compo
+    # listeIngredients = []
+    # for ligneCompo in compoPizza :
+    #     #on récupère l'ingrédient pour utiliser son nomIngredient
+    #     ingredient = Ingredient.objects.get(idIngredient = ligneCompo.ingredient.idIngredient)
+    #     listeIngredients.append(
+    #         {"idComposition" : ligneCompo.id,
+    #          "nom" : ingredient.nomIngredient,
+    #          "qte" : ligneCompo.quantite}
+    #     )
+
+    # #on retourne l'emplacement du template, la pizza récupérée et la liste des ing calculée
+    # return render(
+    #     request,
+    #     'applipizza/pizza.html',
+    #     {"pizza" : piz,
+    #      "liste" : listeIngredients,
+    #      "lesIng" : lesIngredients}
+    # )
+    #return pizza(request,pizza_id)
+    return redirect('/pizzas/%d' % pizza_id)
+
+
+#mofif pizza
+def supprimerPizza(request, pizza_id):
+    # Récupération de la pizza à supprimer
+    pizza_a_supprimer = Pizza.objects.get(idPizza=pizza_id)
+    
+    # Suppression de la pizza
+    pizza_a_supprimer.delete()
+    
+    # Récupération de la liste de toutes les pizzas
+    liste_pizzas = Pizza.objects.all()
+    
+    # Rediriger vers la vue pizzas avec la liste mise à jour
+    return redirect('/pizzas/')
+
+def afficherFormulaireModificationPizza(request, pizza_id) : 
+    pizza_a_modifier = Pizza.objects.get(idPizza = pizza_id)
     return render(
         request,
-        'applipizza/pizza.html',
-        {"pizza" : piz,
-         "liste" : listeIngredients,
-         "lesIng" : lesIngredients}
+        'applipizza/formulaireModificationPizza.html',
+        {"pizza" : pizza_a_modifier}
+    )
+
+def modifierPizza(request, pizza_id):
+    # Récupération de la pizza à modifier
+    pizza_a_modifier = Pizza.objects.get(idPizza=pizza_id)
+    
+    if request.method == 'POST':
+        # Récupération du formulaire posté avec l'instance de la pizza
+        form = PizzaForm(request.POST, instance=pizza_a_modifier)
+        
+        if form.is_valid():
+            # Si le formulaire est valide, sauvegardez les modifications
+            form.save()
+            # Recherchez à nouveau la pizza modifiée dans la base de données
+            pizza_modifiee = Pizza.objects.get(idPizza=pizza_id)
+            # Redirigez vers un template pour afficher un message de confirmation
+            return render(
+                request,
+                'applipizza/traitementFormulaireModificationPizza.html',
+                {"pizza_modifiee": pizza_modifiee}
+            )
+    else:
+        # Si la méthode n'est pas POST, affichez le formulaire avec la pizza à modifier
+        form = PizzaForm(instance=pizza_a_modifier)
+    
+    return render(
+        request,
+        'applipizza/modifierPizza.html',
+        {"form": form, "pizza_a_modifier": pizza_a_modifier}
+    )
+
+
+
+#modif ingrédients
+def supprimerIngredient(request, ingredient_id):
+    # Récupération de la pizza à supprimer
+    ingredient_a_supprimer = Ingredient.objects.get(idIngredient=ingredient_id)
+    
+    # Suppression de la pizza
+    ingredient_a_supprimer.delete()
+    
+    # Récupération de la liste de toutes les pizzas
+    liste_ingredients = Ingredient.objects.all()
+    
+    # Rediriger vers la vue pizzas avec la liste mise à jour
+    return redirect('/ingredients/')
+
+def afficherFormulaireModificationIngredient(request, ingredient_id) : 
+    ingredient_a_modifier = Ingredient.objects.get(idIngredient = ingredient_id)
+    return render(
+        request,
+        'applipizza/formulaireModificationIngredient.html',
+        {"ingredient" : ingredient_a_modifier}
+    )
+
+def modifierIngredient(request, ingredient_id) : 
+    ingredient_a_modifier = Ingredient.objects.get(idIngredient=ingredient_id)
+    
+    if request.method == 'POST':
+        form = IngredientForm(request.POST, instance=ingredient_a_modifier)
+        
+        if form.is_valid():
+            form.save()
+            ingredient_modifie = Ingredient.objects.get(idIngredient=ingredient_id)
+            return render(
+                request,
+                'applipizza/traitementFormulaireModificationIngredient.html',
+                {"ingredient_modifie": ingredient_modifie}
+            )
+    else:
+        form = IngredientForm(instance=ingredient_a_modifier)
+    
+    return render(
+        request,
+        'applipizza/modifierIngredient.html',
+        {"form": form, "ingredient_a_modifier": ingredient_a_modifier}
     )

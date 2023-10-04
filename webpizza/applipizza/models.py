@@ -28,7 +28,7 @@ class Composition(models.Model) :
     class Meta : 
         unique_together = ('ingredient', 'pizza')
     
-    idComposition : models.AutoField(primary_key=True)
+    #idComposition = models.AutoField(primary_key=True)
 
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)

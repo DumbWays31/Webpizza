@@ -36,7 +36,7 @@ détails d'une pizza
     <div class="mb-3">
         <label for="id_ingredient" class="form-label">ingrédient</label>
         <select name="ingredient" class="form-select" required id="id_ingredient">
-            <option selected disabled>choisissez</option>
+            <option selected disabled>choisissez un ingrédient</option>
             {% for ing in lesIng %}
             <option value="{{ing.idIngredient}}">{{ing.nomIngredient}}</option>
             {% endfor %}

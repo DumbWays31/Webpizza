@@ -1,14 +1,17 @@
-    {% extends 'applipizza/base.html' %}
+{% extends 'applipizza/base.html' %}
 
-    {% block title %}
-    les ingredients
-    {% endblock %}
+{% block title %}
+les ingredients
+{% endblock %}
 
-    {% block main %}
-    <h2> voici nos {{ingredients|length}} ingredients </h2>
-    <ul>
-        {% for ingr in ingredients %}
-        <li> {{ingr}} </li>
-        {% endfor %}
-    </ul>
-    {% endblock %}
+{% block main %}
+<h2> voici nos {{ingredients|length}} ingredients </h2>
+<ul>
+    {% for ingr in ingredients %}
+    <li> {{ingr}} | 
+        <a href="/ingredients/{{ingr.idIngredient}}/update">modifier</a> |
+        <a href="/ingredients/{{ingr.idIngredient}}/delete">supprimer</a> 
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
