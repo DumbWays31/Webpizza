@@ -4,6 +4,9 @@ from django.shortcuts import render
 from applipizza.models import Pizza, Ingredient, Composition
 from applipizza.forms import IngredientForm, PizzaForm
 
+from django.http import HttpResponse
+
+
 
 # Create your views here.
 def pizzas(request) :
@@ -120,5 +123,5 @@ def creerPizza(request) :
         return render(
             request,
             'applipizza/traitementFormulaireCreationPizza.html',
-            {"nom" : nomPiz}
+            {"nom" : nomPiz, "prix" : prixPiz}
         )
