@@ -14,13 +14,8 @@ class PizzaForm(ModelForm) :
         model = Pizza
         fields = ['nomPizza', 'prix']
 
-class CompositionForm(forms.ModelForm):
+class CompositionForm(ModelForm):
     class Meta:
         model = Composition
         fields = ['ingredient', 'quantite']
-
-    def __init__(self, *args, **kwargs):
-        super(CompositionForm, self).__init__(*args, **kwargs)
-        self.fields['ingredient'].widget = forms.Select(choices=Ingredient.objects.all().values_list('id', 'nomIngredient'))
-        self.fields['ingredient'].widget.attrs.update({'class': 'custom-select'})
 

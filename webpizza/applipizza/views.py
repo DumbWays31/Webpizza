@@ -33,8 +33,6 @@ def ingredients(request) :
     )
 
 
-from .models import Ingredient  # Assurez-vous d'importer le modèle Ingredient si ce n'est pas déjà fait
-
 def pizza(request, pizza_id):
     # Récupération de la pizza dont l'identifiant a été passé en paramètre (pizza_id)
     laPizza = Pizza.objects.get(idPizza=pizza_id)
@@ -53,16 +51,15 @@ def pizza(request, pizza_id):
         ingredients_list.append(ingredient_info)
 
     # Récupération de tous les ingrédients pour construire le select de formulaire
-    all_ingredients = Ingredient.objects.all()
+    lesIngredients = Ingredient.objects.all()
 
     # On retourne l'emplacement du template, la pizza récupérée de la BD,
     # la liste des ingrédients calculée ci-dessus et la liste de tous les ingrédients
     return render(
         request,
         'applipizza/pizza.html',
-        {"pizza": laPizza, "ingredients_list": ingredients_list, "all_ingredients": all_ingredients}
+        {"pizza": laPizza, "ingredients_list": ingredients_list, "lesIng": lesIngredients}
     )
-
 
 
 
@@ -129,3 +126,56 @@ def creerPizza(request) :
             'applipizza/traitementFormulaireCreationPizza.html',
             {"nom" : nomPiz, "prix" : prixPiz}
         )
+    
+
+
+def ajouterIngredientDansPizza(request, pizza_id) :
+    #recupération du formulaire posté
+    formulaire = Composition(request.POST)
+
+    if formulaire.is_valid():
+        #recuperation des données postées
+        ing = formulaire.cleaned_data['ingredient']
+        qte = formulaire.cleaned_data['quantite']
+        piz = Pizza.objects.get(idPizza = pizza_id)
+        compoPizza = Composition.objects.filter(pizza = pizza_id)
+        lesIngredientsDeLaPizza = ((ligne.ingredient) for ligne in compoPizza)
+
+        if ing in lesIngredientsDeLaPizza : 
+            compo = Composition.objects.filter(pizza = pizza_id, ingredient = ing)
+            compo.delete()
+        
+        #creation de la nvelle instance de Composition et remplissage des attributs
+        compo = Composition()
+        compo.ingredient = ing
+        compo.pizza = piz
+        compo.quantite = qte
+
+        #sauvegarde dans la base de la composition
+        compo.save()
+
+    #récupération de tous les ing pour construire le futur select
+    lesIngredients = Ingredient.objects.all()
+
+    #actualisation des ing entrant dans la composition de la pizza
+    compoPizza = Composition.objects.filter(pizza = pizza_id)
+
+    #on crée une liste dont chaque item contiendra l'identifiant de la compo (idComposition),
+    #le nom de l'ingrédient et la quantité de l'ing dans cette compo
+    listeIngredients = []
+    for ligneCompo in compoPizza :
+        #on récupère l'ingrédient pour utiliser son nomIngredient
+        ingredient = Ingredient.objects.get(idIngredient = ligneCompo.ingredient.idIngredient)
+        listeIngredients.append(
+            {"idComposition" : ligneCompo.idComposition,
+             "nom" : ingredient.nomIngredient,
+             "qte" : ligneCompo.quantite}
+        )
+    #on retourne l'emplacement du template, la pizza récupérée et la liste des ing calculée
+    return render(
+        request,
+        'applipizza/pizza.html',
+        {"pizza" : piz,
+         "liste" : listeIngredients,
+         "lesIng" : lesIngredients}
+    )

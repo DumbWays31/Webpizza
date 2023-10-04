@@ -2,7 +2,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary{
     background-color: #457b9d !important;
 }
 
-
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
 footer{
     /* position: absolute;
@@ -11,14 +15,15 @@ footer{
     height: 70px;
     width: 100%;
     color:#FFFFFF; 
-    /* background: #a8dadc; */
-    background: red;
-
+    background: #a8dadc;
     font-size:16px;
     text-align: center;
     line-height:70px;
     font-style: italic;
-    /* margin-top: au; */
+    margin-top: auto;
+}
 
+.btn-primary{
+    margin-bottom: 30px;
 }
 
