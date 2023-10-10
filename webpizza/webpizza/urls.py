@@ -42,4 +42,7 @@ urlpatterns = [
     path('ingredients/<int:ingredient_id>/update/', views.afficherFormulaireModificationIngredient),
     path('ingredients/<int:ingredient_id>/updated/', views.modifierIngredient),
 
+    #modifier compostition
+    path('pizzas/<int:pizza_id>/deleteIngredient/<int:composition_id>/',views.supprimerIngredientDansPizza),
+
 ]

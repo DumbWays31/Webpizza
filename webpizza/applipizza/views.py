@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 #import des modèles
 from applipizza.models import Pizza, Ingredient, Composition
@@ -282,3 +281,34 @@ def modifierIngredient(request, ingredient_id) :
         'applipizza/modifierIngredient.html',
         {"form": form, "ingredient_a_modifier": ingredient_a_modifier}
     )
+
+
+
+
+#modif composition
+def supprimerIngredientDansPizza(request, pizza_id, composition_id):
+    # Étape a : Récupérer la composition à supprimer
+    composition = Composition.objects.get(id=composition_id)
+    
+    # Étape b : Appeler la méthode delete() sur cette composition
+    composition.delete()
+    
+    # Étape c : Récupérer la pizza dont l'idPizza est passé en paramètre
+    pizza = get_object_or_404(Pizza, idPizza=pizza_id)
+    
+    # Étape d : Récupérer toutes les compositions concernant la pizza
+    compositions_pizza = Composition.objects.filter(pizza=pizza)
+    
+    # Étape e : Refabriquer la liste des ingrédients de la pizza
+    ingredients_list = [(comp.ingredient, comp.quantite) for comp in compositions_pizza]
+    
+    # Étape f : Créer un nouveau formulaire CompositionForm
+    composition_form = CompositionForm()
+    
+    # Étape g : Appeler le template pizzas.html en lui fournissant les données nécessaires
+    return render(request, 'applipizza/pizzas.html', {
+        'pizzas': Pizza.objects.all(),
+        'pizza': pizza,
+        'ingredients_list': ingredients_list,
+        'composition_form': composition_form,
+    })
