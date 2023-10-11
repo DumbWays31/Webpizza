@@ -1,7 +1,7 @@
 from django.urls import path
+from applipizza import views
 from django.conf import settings
 from django.conf.urls.static import static
-from applipizza import views
 
 urlpatterns = [
     path('pizzas/', views.pizzas),

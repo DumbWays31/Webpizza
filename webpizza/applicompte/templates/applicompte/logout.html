@@ -1,0 +1,12 @@
+{% extends 'applipizza/base.html' %}
+{% load static %}
+{% block title %} au revoir {% endblock %}
+{% block main %}
+
+<div class="div-logout">
+    <h2>Vous nous manquez déjà !</h2>
+    <p>Nous espérons vous revoir bientôt !</p>
+    <img class="imagePizza" src="{% static 'applipizza/img/pizza.png' %}" alt="imagePizza">
+    <a href="/login/"> connexion </a>
+</div>
+{% endblock %}

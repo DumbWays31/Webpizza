@@ -9,9 +9,6 @@ body{
 }
 
 footer{
-    /* position: absolute;
-    left: 0;
-    bottom: 0; */
     height: 70px;
     width: 100%;
     color:#FFFFFF; 
@@ -63,3 +60,7 @@ svg{
     margin-right: 10px;
 }
 
+
+img.imagePizza {
+    height: 25px;
+}
