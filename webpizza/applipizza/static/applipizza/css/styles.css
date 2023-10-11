@@ -27,3 +27,39 @@ footer{
     margin-bottom: 30px;
 }
 
+
+
+/* page toutes les pizzas */
+/* styles.css */
+.pizzas-container ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.pizzas-container li {
+    flex: 0 0 calc(33.33% - 20px); /* 3 pizzas par ligne avec un espacement de 20px entre elles */
+    margin-bottom: 20px;
+    background-color: #77abbd; /* Fond bleu pour chaque élément */
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.pizza-item img {
+    max-width: 100%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+}
+
+.pizza-details {
+    color: white; /* Couleur du texte blanc */
+}
+
+svg{
+    margin-right: 10px;
+}
+

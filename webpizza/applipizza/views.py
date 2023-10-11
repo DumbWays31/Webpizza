@@ -108,23 +108,31 @@ def formulaireCreationPizza(request) :
 
 def creerPizza(request) :
     
-    form = PizzaForm(request.POST)
+    form = PizzaForm(request.POST, request.FILES)
 
     if form.is_valid() :
         nomPiz = form.cleaned_data['nomPizza']
         prixPiz = form.cleaned_data['prix']
+        imagePiz = request.FILES['image']
 
         piz = Pizza()
 
         piz.nomPizza = nomPiz
         piz.prix = prixPiz
+        piz.image = imagePiz
 
         piz.save()
 
         return render(
             request,
             'applipizza/traitementFormulaireCreationPizza.html',
-            {"nom" : nomPiz, "prix" : prixPiz}
+            {"nom" : nomPiz, "prix" : prixPiz, "image" : imagePiz}
+        )
+    else : 
+        return render(
+            request,
+            'applipizza/formulaireNonValide.html',
+            {"errors" : form.errors}
         )
     
 
@@ -212,9 +220,10 @@ def modifierPizza(request, pizza_id):
     
     if request.method == 'POST':
         # Récupération du formulaire posté avec l'instance de la pizza
-        form = PizzaForm(request.POST, instance=pizza_a_modifier)
+        form = PizzaForm(request.POST, request.FILES, instance=pizza_a_modifier)
         
         if form.is_valid():
+            pizza_a_modifier.image = request.FILES['image']
             # Si le formulaire est valide, sauvegardez les modifications
             form.save()
             # Recherchez à nouveau la pizza modifiée dans la base de données

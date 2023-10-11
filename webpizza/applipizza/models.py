@@ -15,10 +15,14 @@ class Ingredient(models.Model) :
 
 class Pizza(models.Model) : 
     idPizza = models.AutoField(primary_key=True)
+
     nomPizza = models.CharField(max_length=50, verbose_name="le nom de cette pizza")
 
     #prix est décimal, max 4 chiffres dont 2 décimales
     prix = models.DecimalField(max_digits=4, decimal_places=2, verbose_name="le prix")
+
+    #fichier image de la pizza
+    image = models.ImageField(default='imagesPizzas/default.PNG', upload_to='imagesPizzas/')
 
     def __str__(self) -> str:
         return 'pizza ' + self.nomPizza + ' (prix : ' +str(self.prix) + ' €)'
