@@ -15,39 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
-from applipizza import views
+from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('pizzas/', views.pizzas),
-    path('ingredients/', views.ingredients),
-    path('pizzas/<int:pizza_id>/', views.pizza),
-    
-    path('ingredients/add/',views.formulaireCreationIngredient),
-    path('ingredients/create/',views.creerIngredient),
-
-    path('pizzas/add/',views.formulaireCreationPizza),
-    path('pizzas/create/',views.creerPizza),
-
-    path('pizzas/<int:pizza_id>/addIngredient/', views.ajouterIngredientDansPizza),
-
-    #modifier pizza
-    path('pizzas/<int:pizza_id>/delete/', views.supprimerPizza),
-    path('pizzas/<int:pizza_id>/update/', views.afficherFormulaireModificationPizza),
-    path('pizzas/<int:pizza_id>/updated/', views.modifierPizza),
-
-    #modifier ingrédient
-    path('ingredients/<int:ingredient_id>/delete/', views.supprimerIngredient),
-    path('ingredients/<int:ingredient_id>/update/', views.afficherFormulaireModificationIngredient),
-    path('ingredients/<int:ingredient_id>/updated/', views.modifierIngredient),
-
-    #modifier compostition
-    path('pizzas/<int:pizza_id>/deleteIngredient/<int:composition_id>/',views.supprimerIngredientDansPizza),
-
+    path('', include('applipizza.urls')),
 ]
-
-urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
