@@ -1,31 +1,30 @@
 {% extends 'applipizza/base.html' %}
-{% block title %} connexion {% endblock %} 
+{% block title %} Connexion {% endblock %}
 
 {% block main %}
-<form id="form_login" method="post" action="/connexion/">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id_username"> identifiant </label>
-        <input type="text" class="form-control" id="id_username" name="username" placeholder="votre identifiant">
-    </div>
-    <div class="mb-3">
-        <label for="id_password"> mot de passe </label>
-        <input type="password" class="form-control" id="id_password" name="password" placeholder="votre mot de passe">
-    </div>
-    <button type="submit" class="btn btn-primary">se connecter</button>
-</form> 
-
-<div>
-    <small>
-        Pas encore inscrit ? 
-        <a href="/register/">
-            S'inscrire
-        </a>
-        <br>
-        Mot de passe oublié ? 
-        <a href="/password_reset/">
-            Renouveler mon mot de passe
-        </a>
-    </small>
-</div>
+    {% if not user.is_authenticated %}
+        <form id="form_login" method="post" action="/connexion/">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_username">Identifiant</label>
+                <input type="text" class="form-control" id="id_username" name="username" placeholder="Votre identifiant">
+            </div>
+            <div class="mb-3">
+                <label for="id_password">Mot de passe</label>
+                <input type="password" class="form-control" id="id_password" name="password" placeholder="Votre mot de passe">
+            </div>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+        <div>
+            <small>
+                Pas encore inscrit ? 
+                <a href="/register/">S'inscrire</a>
+                <br>
+                Mot de passe oublié ? 
+                <a href="/password_reset/">Renouveler mon mot de passe</a>
+            </small>
+        </div>
+    {% else %}
+        <meta http-equiv="refresh" content="0;url=../pizzas/">
+    {% endif %}
 {% endblock %}
