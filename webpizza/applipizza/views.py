@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 
+
 #import des modèles
 from applipizza.models import Pizza, Ingredient, Composition
 from applipizza.forms import IngredientForm, PizzaForm, CompositionForm
+from applicompte.models import PizzaUser
+
 
 
 
@@ -10,6 +13,9 @@ from applipizza.forms import IngredientForm, PizzaForm, CompositionForm
 # PIZZAS, PIZZA, INGREDIENTS #
 #----------------------------#
 def pizzas(request) :
+    user = None
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get(id = request.user.id)
 
     #récup des pizzas de la BD avec les memes instructions que dans le shell
     lesPizzas = Pizza.objects.all()
@@ -20,10 +26,17 @@ def pizzas(request) :
     return render(
         request,
         'applipizza/pizzas.html',
-        {'pizzas' : lesPizzas}
-    )
+        {'pizzas' : lesPizzas 
+         , "user" : user
+         }
+        )
 
 def pizza(request, pizza_id):
+    user = None
+
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get (id = request.user.id)
+
     # Récupération de la pizza dont l'identifiant a été passé en paramètre (pizza_id)
     laPizza = Pizza.objects.get(idPizza=pizza_id)
 
@@ -53,29 +66,31 @@ def pizza(request, pizza_id):
 
 def ingredients(request) :
     # création du user
-    # user = None
+    user = None
 
     # utilisateur staff
     if request.user.is_staff :
+        user = PizzaUser.objects.get (id = request.user.id)
         lesIngredients = Ingredient.objects.all()
-        # user = User.objects.get (id = request.user.id)
+        user = User.objects.get (id = request.user.id)
         return render( 
             request,
             'applipizza/ingredients.html',
             {'ingredients' : lesIngredients
-            #  ,"user" : user
+             ,"user" : user
              }
         )
     
     # client connecté
     elif request.user.is_authenticated :
-        # user = User.objects.get(id = request.user.id)
+        user = PizzaUser.objects.get (id = request.user.id)
+        user = User.objects.get(id = request.user.id)
         lesPizzas = Pizza.objects.al1()
         return render(
             request,
             'applipizza/pizzas.html',
             {'pizzas' : lesPizzas
-            #  , "user" : user
+             , "user" : user
              }
         )
 
@@ -92,8 +107,11 @@ def ingredients(request) :
 #      CREER INGREDIENT      #
 #----------------------------#
 def formulaireCreationIngredient(request) :
+    user = None
+
     # Vérifie si l'utilisateur est connecté et fait partie du personnel (staff)
     if request.user.is_authenticated and request.user.is_staff:
+        user = PizzaUser.objects.get (id = request.user.id)
         return render(
             request,
         'applipizza/formulaireCreationIngredient.html',
@@ -223,7 +241,6 @@ def ajouterIngredientDansPizza(request, pizza_id) :
     else : 
         return redirect ('/pizzas/')
 
-
 def supprimerIngredientDansPizza(request, pizza_id, composition_id):
     # Étape a : Récupérer la composition à supprimer
     composition = Composition.objects.get(id=composition_id)
@@ -276,7 +293,6 @@ def supprimerPizza(request, pizza_id):
     
     else :
         return redirect('/pizzas/')
-
 
 def afficherFormulaireModificationPizza(request, pizza_id) : 
     pizza_a_modifier = Pizza.objects.get(idPizza = pizza_id)

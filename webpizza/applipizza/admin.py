@@ -6,3 +6,4 @@ admin.site.register(Ingredient)
 admin.site.register(Pizza)
 admin.site.register(Composition)
 
+

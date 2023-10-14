@@ -5,4 +5,4 @@ from django.contrib.auth.models import User
 
 class PizzaUser(User) :
 # fichier image de l'utilisateur
-    image = models. ImageField(default = 'imagesUsers/default.PNG', upload_to = 'imagesUsers/')
+    image = models.ImageField(default = 'imagesUsers/default.PNG', upload_to = 'imagesUsers/')
