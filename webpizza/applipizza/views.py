@@ -13,9 +13,9 @@ from applicompte.models import PizzaUser
 # PIZZAS, PIZZA, INGREDIENTS #
 #----------------------------#
 def pizzas(request) :
-    user = None
-    if request.user.is_authenticated :
-        user = PizzaUser.objects.get(id = request.user.id)
+    # user = None
+    # if request.user.is_authenticated :
+    #     user = PizzaUser.objects.get(id = request.user.id)
 
     #récup des pizzas de la BD avec les memes instructions que dans le shell
     lesPizzas = Pizza.objects.all()
@@ -27,7 +27,7 @@ def pizzas(request) :
         request,
         'applipizza/pizzas.html',
         {'pizzas' : lesPizzas 
-         , "user" : user
+        #  , "user" : user
          }
         )
 
@@ -90,7 +90,7 @@ def ingredients(request) :
             request,
             'applipizza/pizzas.html',
             {'pizzas' : lesPizzas
-             , "user" : user
+            #  , "user" : user
              }
         )
 
