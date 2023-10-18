@@ -56,17 +56,18 @@ def formulaireProfil(request) :
         )
     
 
-def traitementFormulaireProfil(request) :
+def traitementFormulaireProfil(request, user_id) :
     user = None
 
     # cas d'un utilisateur staff
     if request.user.is_authenticated :
-        user = PizzaUser.objects.get(id = request.user.id)
+        # user = PizzaUser.objects.get(id = request.user.id)
+        user = PizzaUser.objects.get(id = user_id)
         form = PizzaUserForm(request.POST, request.FILES, instance = user)
         if form.is_valid() :
             form.save()
             user = PizzaUser.objects.get(id = request.user.id)
-        lesPizzas = Pizza.objects.al1()
+        lesPizzas = Pizza.objects.all()
         return render(
             request,
             'applipizza/pizzas.html',
