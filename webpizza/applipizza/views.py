@@ -13,9 +13,9 @@ from applicompte.models import PizzaUser
 # PIZZAS, PIZZA, INGREDIENTS #
 #----------------------------#
 def pizzas(request) :
-    # user = None
-    # if request.user.is_authenticated :
-    #     user = PizzaUser.objects.get(id = request.user.id)
+    user = None
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get(id = request.user.id)
 
     #récup des pizzas de la BD avec les memes instructions que dans le shell
     lesPizzas = Pizza.objects.all()
@@ -26,10 +26,8 @@ def pizzas(request) :
     return render(
         request,
         'applipizza/pizzas.html',
-        {'pizzas' : lesPizzas 
-        #  , "user" : user
-         }
-        )
+        {'pizzas' : lesPizzas, "user" : user}
+    )
 
 def pizza(request, pizza_id):
     user = None
@@ -61,7 +59,7 @@ def pizza(request, pizza_id):
     return render(
         request,
         'applipizza/pizza.html',
-        {"pizza": laPizza, "ingredients_list": ingredients_list, "lesIng": lesIngredients}
+        {"pizza": laPizza, "ingredients_list": ingredients_list, "lesIng": lesIngredients, "user" : user}
     )
 
 def ingredients(request) :
@@ -72,7 +70,6 @@ def ingredients(request) :
     if request.user.is_staff :
         user = PizzaUser.objects.get (id = request.user.id)
         lesIngredients = Ingredient.objects.all()
-        user = User.objects.get (id = request.user.id)
         return render( 
             request,
             'applipizza/ingredients.html',
@@ -84,13 +81,12 @@ def ingredients(request) :
     # client connecté
     elif request.user.is_authenticated :
         user = PizzaUser.objects.get (id = request.user.id)
-        user = User.objects.get(id = request.user.id)
         lesPizzas = Pizza.objects.al1()
         return render(
             request,
             'applipizza/pizzas.html',
             {'pizzas' : lesPizzas
-            #  , "user" : user
+             , "user" : user
              }
         )
 
@@ -111,10 +107,11 @@ def formulaireCreationIngredient(request) :
 
     # Vérifie si l'utilisateur est connecté et fait partie du personnel (staff)
     if request.user.is_authenticated and request.user.is_staff:
-        user = PizzaUser.objects.get (id = request.user.id)
+        user = PizzaUser.objects.get(id = request.user.id)
         return render(
             request,
-        'applipizza/formulaireCreationIngredient.html',
+            'applipizza/formulaireCreationIngredient.html',
+            {"user" : user}
         )
     else:
         # si l'accès n'est pas autorisé
@@ -124,6 +121,10 @@ def formulaireCreationIngredient(request) :
         )
 
 def creerIngredient(request) : 
+    user = None
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get(id = request.user.id)
+
     #recup du form posté
     form = IngredientForm(request.POST)
 
@@ -147,7 +148,7 @@ def creerIngredient(request) :
             return render(
                 request,
                 'applipizza/traitementFormulaireCreationIngredient.html',
-                {"nom" : nomIng}
+                {"nom" : nomIng, "user" : user}
             )
     
     else : 
@@ -159,11 +160,15 @@ def creerIngredient(request) :
 #       CREER PIZZA          #
 #----------------------------#
 def formulaireCreationPizza(request):
+    user = None
+
     # Vérifie si l'utilisateur est connecté et fait partie du personnel (staff)
     if request.user.is_authenticated and request.user.is_staff:
+        user = PizzaUser.objects.get(id = request.user.id)
         return render(
             request,
             'applipizza/formulaireCreationPizza.html',
+            {"user" : user}
         )
     else:
         # si l'accès n'est pas autorisé
@@ -173,9 +178,11 @@ def formulaireCreationPizza(request):
         )
 
 def creerPizza(request) :
+    user = None
     form = PizzaForm(request.POST, request.FILES)
 
     if request.user.is_staff : 
+        user = PizzaUser.objects.get(id = request.user.id)
         if form.is_valid() :
             nomPiz = form.cleaned_data['nomPizza']
             prixPiz = form.cleaned_data['prix']
@@ -192,7 +199,7 @@ def creerPizza(request) :
             return render(
                 request,
                 'applipizza/traitementFormulaireCreationPizza.html',
-                {"nom" : nomPiz, "prix" : prixPiz, "image" : imagePiz}
+                {"nom" : nomPiz, "prix" : prixPiz, "image" : imagePiz, "user": user}
             )
         else : 
             return render(
@@ -213,7 +220,7 @@ def ajouterIngredientDansPizza(request, pizza_id) :
     #recupération du formulaire posté
     formulaire = CompositionForm(request.POST)
 
-    if request.user.is_staff : 
+    if request.user.is_staff :
         if formulaire.is_valid():
             #recuperation des données postées
             ing = formulaire.cleaned_data['ingredient']
@@ -235,17 +242,17 @@ def ajouterIngredientDansPizza(request, pizza_id) :
             #sauvegarde dans la base de la composition
             compo.save()
 
-        #return pizza(request,pizza_id)
         return redirect('/pizzas/%d' % pizza_id)
     
     else : 
         return redirect ('/pizzas/')
 
 def supprimerIngredientDansPizza(request, pizza_id, composition_id):
-    # Étape a : Récupérer la composition à supprimer
-    composition = Composition.objects.get(id=composition_id)
 
     if request.user.is_staff : 
+        # Étape a : Récupérer la composition à supprimer
+        composition = Composition.objects.get(id=composition_id)
+
         # Étape b : Appeler la méthode delete() sur cette composition
         composition.delete()
         
@@ -262,12 +269,12 @@ def supprimerIngredientDansPizza(request, pizza_id, composition_id):
         composition_form = CompositionForm()
         
         # Étape g : Appeler le template pizzas.html en lui fournissant les données nécessaires
-        return render(request, 'applipizza/pizzas.html', {
-            'pizzas': Pizza.objects.all(),
-            'pizza': pizza,
-            'ingredients_list': ingredients_list,
-            'composition_form': composition_form,
-        })
+        return render(
+            request, 
+            'applipizza/pizzas.html', 
+            {'pizzas': Pizza.objects.all(), 'pizza': pizza, 'ingredients_list': ingredients_list,
+            'composition_form': composition_form,}
+        )
     
     else : 
         return redirect ('/pizzas/')
@@ -294,14 +301,17 @@ def supprimerPizza(request, pizza_id):
     else :
         return redirect('/pizzas/')
 
-def afficherFormulaireModificationPizza(request, pizza_id) : 
+def afficherFormulaireModificationPizza(request, pizza_id) :
+    user = None
+
     pizza_a_modifier = Pizza.objects.get(idPizza = pizza_id)
     # Vérifie si l'utilisateur est connecté et fait partie du personnel (staff)
     if request.user.is_authenticated and request.user.is_staff:
+        user = PizzaUser.objects.get(id = request.user.id)
         return render(
             request,
             'applipizza/formulaireModificationPizza.html',
-            {"pizza" : pizza_a_modifier}
+            {"pizza" : pizza_a_modifier, "user" : user}
         )
     else:
         # si l'accès n'est pas autorisé
@@ -311,10 +321,15 @@ def afficherFormulaireModificationPizza(request, pizza_id) :
         )
 
 def modifierPizza(request, pizza_id):
+    user = None
+
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get(id = request.user.id)
+
     # Récupération de la pizza à modifier
     pizza_a_modifier = Pizza.objects.get(idPizza=pizza_id)
     
-    if request.user.is_staff :  
+    if request.user.is_staff :
         if request.method == 'POST':
             # Récupération du formulaire posté avec l'instance de la pizza
             form = PizzaForm(request.POST, request.FILES, instance=pizza_a_modifier)
@@ -329,7 +344,7 @@ def modifierPizza(request, pizza_id):
                 return render(
                     request,
                     'applipizza/traitementFormulaireModificationPizza.html',
-                    {"pizza_modifiee": pizza_modifiee}
+                    {"pizza_modifiee": pizza_modifiee, "user" : user}
                 )
         else:
             # Si la méthode n'est pas POST, affichez le formulaire avec la pizza à modifier
@@ -365,14 +380,17 @@ def supprimerIngredient(request, ingredient_id):
     else : 
         return redirect('/pizzas/')
 
-def afficherFormulaireModificationIngredient(request, ingredient_id) : 
+def afficherFormulaireModificationIngredient(request, ingredient_id) :
+    user = None
+
     ingredient_a_modifier = Ingredient.objects.get(idIngredient = ingredient_id)
 
     if request.user.is_authenticated and request.user.is_staff:
+        user = PizzaUser.objects.get(id = request.user.id)
         return render(
         request,
         'applipizza/formulaireModificationIngredient.html',
-        {"ingredient" : ingredient_a_modifier}
+        {"ingredient" : ingredient_a_modifier, "user" : user}
     )
     else:
         return render ( 
@@ -380,7 +398,11 @@ def afficherFormulaireModificationIngredient(request, ingredient_id) :
             'applicompte/login.html',
         )
 
-def modifierIngredient(request, ingredient_id) : 
+def modifierIngredient(request, ingredient_id) :
+    user = None
+    if request.user.is_authenticated :
+        user = PizzaUser.objects.get(id = request.user.id)
+
     ingredient_a_modifier = Ingredient.objects.get(idIngredient=ingredient_id)
 
     if request.user.is_staff : 
@@ -393,7 +415,7 @@ def modifierIngredient(request, ingredient_id) :
                 return render(
                     request,
                     'applipizza/traitementFormulaireModificationIngredient.html',
-                    {"ingredient_modifie": ingredient_modifie}
+                    {"ingredient_modifie": ingredient_modifie, "user" : user}
                 )
         else:
             form = IngredientForm(instance=ingredient_a_modifier)

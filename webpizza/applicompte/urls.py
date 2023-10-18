@@ -8,4 +8,6 @@ urlpatterns =  [
     path('login/', auth_views.LoginView.as_view(template_name='applicompte/login.html'), name='login'),
     path('logout/', views.deconnexion, name="logout"),
     path('connexion/', views.connexion),
+    path('user/update/', views.formulaireProfil),
+    path('user/<int:user_id>/updated/', views.traitementFormulaireProfil),
 ]
