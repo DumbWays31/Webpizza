@@ -1,0 +1,38 @@
+{% extends 'applipizza/base.html' %}
+
+{% block title %} 
+inscription 
+{% endblock %} 
+
+{% block main %} 
+
+<h2>Remplissez notre formulaire d'inscription</h2>
+<form enctype="multipart/form-data" id="form_register" method="post" action="/inscription/">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_username"> identifiant </label>
+        <input type="text" class="form-control" id="id_username" name="username" placeholder="votre identifiant">
+    </div>
+    <div class="mb-3">
+        <label for="first_name"> prénom </label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="votre prénom">
+    </div>
+    <div class="mb-3">
+        <label for="last_name"> nom </label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="votre nom">
+    </div>
+    <div class="mb-3">
+        <label for="email"> email </label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="votre email">
+    </div>
+    <div class="mb-3">
+        <label for="id_password"> mot de passe </label>
+        <input type="password" class="form-control" id="id_password" name="password" placeholder="votre mot de passe">
+    </div>
+    <div class="mb-3">
+        <label for="id_image" class="form-label">votre photo</label>
+        <input class="form-control" name="image" type="file" accept="image/*" id="id_image">
+    </div>
+    <button type="submit" class="btn btn-primary">s'inscrire</button>
+</form>
+{% endblock %}
