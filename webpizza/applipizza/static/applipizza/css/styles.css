@@ -64,3 +64,22 @@ svg{
 img.imagePizza {
     height: 25px;
 }
+
+
+
+
+/* PIZZA DÉTAIL */
+.pizza-details {
+    text-align: center; 
+    margin-top: 20px; 
+}
+
+.pizza-details img {
+    max-width: 100%; 
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.pizza-details button {
+    margin-top: 30px;
+}

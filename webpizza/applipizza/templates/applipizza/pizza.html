@@ -8,6 +8,17 @@ détails d'une pizza
 <h2> Voici notre pizza </h2>
 <p>{{ pizza }}</p>
 
+<div class="pizza-details">
+    <img src="{{ MEDIA_URL }}{{ pizza.image }}" alt="Image de la pizza" title="{{ pizza.nomPizza }}">
+    {% if user.is_authenticated %}
+        <form method="GET" action="/pizzas/{{ pizza.idPizza }}/buy/">
+            <button type="submit" class="btn btn-primary">Acheter cette pizza</button>
+        </form>
+    {% endif %}
+</div>
+
+
+
 {% if ingredients_list %}
 
 <h3>Ingrédients :</h3>

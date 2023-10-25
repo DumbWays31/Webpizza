@@ -30,7 +30,7 @@ def connexion (request) :
         return render( 
             request,
             # 'applicompte/login.html'
-            'applicompte/erreur.html'
+            'applicompte/erreurConnexion.html'
         )
 
 def deconnexion (request) :

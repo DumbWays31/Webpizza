@@ -1,0 +1,10 @@
+{% extends 'applipizza/base.html' %}
+{% block title %} Avis de Paiement {% endblock %}
+
+{% block main %}
+
+<h2>Votre commande</h2>
+<p>Votre commande a bien été validée et payée, nous vous remercions.</p>
+<p>Rappel : le montant de votre commande est de {{ panier.prix }}.</p>
+
+{% endblock %}
