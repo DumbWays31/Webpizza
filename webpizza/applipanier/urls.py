@@ -11,4 +11,7 @@ urlpatterns = [
     path('cart/delete/', views.viderPanier),
     path('cart/<int:pizza_id>/decrease/', views.retirerUnePizzaDuPanier),
     path('cart/pay/', views.payerPanier),
+
+    path('orders/', views.liste_commandes, name='liste_commandes'),
+    path('orders/<int:commande_id>/', views.detail_commande, name='detail_commande'),
 ]

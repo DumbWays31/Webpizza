@@ -203,3 +203,39 @@ def payerPanier(request):
         request, 
         'applipanier/avisPaiement.html', 
         {'panier': panier, 'user': pizzauser})
+
+
+
+#----------------------------#
+#        HISTORIQUE          #
+#----------------------------#
+def liste_commandes(request):
+    if not request.user.is_authenticated:
+        return redirect('/pizzas/')
+    
+    pizzauser = PizzaUser.objects.get(id=request.user.id)
+    commandes = Commande.objects.filter(pizzauser=pizzauser)
+
+    return render(
+        request, 
+        'applipanier/liste_commandes.html', 
+        {'commandes': commandes, 'user': pizzauser}
+    )
+
+
+def detail_commande(request, commande_id):
+    if not request.user.is_authenticated:
+        return redirect('/pizzas/')
+    
+    pizzauser = PizzaUser.objects.get(id=request.user.id)
+    commande = Commande.objects.get(idCommande=commande_id, pizzauser=pizzauser)
+    lignes_commande = LigneCommande.objects.filter(commande=commande)
+    
+    for ligne in lignes_commande:
+        ligne.prix_total = ligne.quantite * ligne.pizza.prix
+    
+    return render(
+        request, 
+        'applipanier/detail_commande.html', 
+        {'commande': commande, 'lignes_commande': lignes_commande, 'user': pizzauser}
+    )

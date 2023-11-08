@@ -1,0 +1,31 @@
+{% extends 'applipizza/base.html' %}
+
+{% block title %} Détail de la commande {{ commande.idCommande }} {% endblock %}
+
+{% block main %}
+<h2>Détail de la commande n° {{ commande.idCommande }}</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom de la Pizza</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Prix Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ligne in lignes_commande %}
+            <tr>
+                <td>{{ ligne.pizza.nomPizza }}</td>
+                <td>{{ ligne.quantite }}</td>
+                <td>{{ ligne.pizza.prix|floatformat:2 }} €</td>
+                <td>{{ ligne.prix_total|floatformat:2 }} €</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="text-right">
+    <p><b>Total de la commande : {{ commande.prix|floatformat:2 }} €</b></p>
+</div>
+{% endblock %}
