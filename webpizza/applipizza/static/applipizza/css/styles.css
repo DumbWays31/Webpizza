@@ -1,11 +1,16 @@
-nav.navbar.navbar-expand-lg.navbar-dark.bg-primary{
-    background-color: #457b9d !important;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 
 body{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+main{
+    padding-top: 30px;
+
 }
 
 footer{
@@ -19,6 +24,14 @@ footer{
     font-style: italic;
     margin-top: auto;
 }
+
+
+/* NAVBAR */
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary{
+    background-color: #457b9d !important;
+    padding: 10px 40px;
+}
+
 
 .btn-primary{
     margin-bottom: 30px;
@@ -49,7 +62,7 @@ footer{
     max-width: 100%;
     border-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .pizza-details {
@@ -82,4 +95,8 @@ img.imagePizza {
 
 .pizza-details button {
     margin-top: 30px;
+}
+
+.addIngredient{
+    margin-top: 50px;
 }
